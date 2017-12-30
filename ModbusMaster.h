@@ -54,6 +54,41 @@ Arduino library for communicating with Modbus slaves over RS232/485 (via RTU pro
 // functions to manipulate words
 // #include "util/word.h"
 
+/*
+ * Unions for hex to various types conversion
+ * (used by helper functions)
+ */
+union IntData
+{
+  uint16_t u[2];
+  int i;
+};
+
+union FloatData
+{
+  uint16_t u[2];
+  float f;
+};
+
+union ULongData
+{
+  uint16_t u[2];
+  unsigned long ul;
+};
+
+union TimeData
+{
+  uint16_t u[2];
+  time_t t;
+};
+
+union StringData
+{
+  uint16_t u[32];
+  char c[64];
+  wchar_t w[32];
+};
+
 /* _____CLASS DEFINITIONS____________________________________________________ */
 /**
 Arduino class library for communicating with Modbus slaves over
@@ -249,7 +284,7 @@ class ModbusMaster
     static const uint8_t ku8MBReadWriteMultipleRegisters = 0x17; ///< Modbus function 0x17 Read Write Multiple Registers
 
     // Modbus timeout [milliseconds]
-    static const uint16_t ku16MBResponseTimeout          = 2000; ///< Modbus timeout [milliseconds]
+    static const uint16_t ku16MBResponseTimeout          = 300; ///< Modbus timeout [milliseconds]
 
     // master function that conducts Modbus transactions
     uint8_t ModbusMasterTransaction(uint8_t u8MBFunction);

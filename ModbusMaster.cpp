@@ -701,43 +701,47 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
 
   // flush receive buffer before transmitting request
   while (_serial->read() > -1);
-
+  
   // transmit request
   if (_preTransmission)
   {
-    if (_debugMode) Serial.println("preTransmission");
+    /*if (_debugMode) Log.info("preTransmission");*/
     _preTransmission();
   }
 
-  if (_debugMode) Serial.print("TX: ");
+  if (_debugMode) Log.trace("TX:");
   for (i = 0; i < u8ModbusADUSize; i++)
   {
-    if (_debugMode) Serial.printf("%0x ",u8ModbusADU[i]);
+    if (_debugMode) Log.trace("- %0x",u8ModbusADU[i]);
     _serial->write(u8ModbusADU[i]);
   }
-  if (_debugMode) Serial.println(".");
 
   u8ModbusADUSize = 0;
-  if (_debugMode) Serial.println("Flushing");
+  /*if (_debugMode) Log.info("Flushing");*/
   _serial->flush();    // flush transmit buffer
-  if (_debugMode) Serial.println("Flushed");
+  /*if (_debugMode) Log.info("Flushed");*/
   if (_postTransmission)
   {
-    if (_debugMode) Serial.println("postTransmission");
+    /*if (_debugMode) Log.info("postTransmission");*/
     _postTransmission();
   }
 
   // loop until we run out of time or bytes, or an error occurs
   u32StartTime = millis();
-  if (_debugMode) Serial.print("RX: ");
+  if (_debugMode) Log.trace("RX:");
+  bool startedReading = false;
   while (u8BytesLeft && !u8MBStatus)
   {
     int byteRead = _serial->read();
     if (byteRead>-1)
     {
-      if (_debugMode) Serial.printf("%0x ",byteRead);
-      u8ModbusADU[u8ModbusADUSize++] = (uint8_t) byteRead;
-      u8BytesLeft--;
+      // discard any initial 0x00 byte
+      if (startedReading || byteRead != 0) {
+          if (_debugMode) Log.trace("- %0x",byteRead);
+          u8ModbusADU[u8ModbusADUSize++] = (uint8_t) byteRead;
+          u8BytesLeft--;
+          startedReading = true;
+      }
     }
     else
     {
@@ -800,7 +804,6 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
     }
   }
 
-  if (_debugMode) Serial.println(".");
   // verify response is large enough to inspect further
   if (!u8MBStatus && u8ModbusADUSize >= 5)
   {
@@ -870,6 +873,6 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
   _u8TransmitBufferIndex = 0;
   u16TransmitBufferLength = 0;
   _u8ResponseBufferIndex = 0;
-  if (_debugMode) Serial.printlnf("Status: %0x",u8MBStatus);
+  if (_debugMode) Log.info("Status: %0x",u8MBStatus);
   return u8MBStatus;
 }
