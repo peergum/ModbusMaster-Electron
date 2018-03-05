@@ -16,7 +16,7 @@ Arduino library for communicating with Modbus slaves over RS232/485 (via RTU pro
   Library:: ModbusMaster
 
   Copyright:: 2009-2016 Doc Walker
-
+  Copyright:: 2017-2018 Philippe Hilger, Particle version
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
