@@ -68,11 +68,19 @@ ModbusMaster::ModbusMaster(void)
 void ModbusMaster::begin(uint8_t slave, USARTSerial &serial)
 {
 //  txBuffer = (uint16_t*) calloc(ku8MaxBufferSize, sizeof(uint16_t));
-  _u8MBSlave = slave;
+  setSlave(slave);
   _serial = &serial;
   _u8TransmitBufferIndex = 0;
   u16TransmitBufferLength = 0;
 
+}
+
+// NOTE: This method only changes the slaveID used by other methods, but
+// does NOT update the slaveID defined in the slave itself.
+// This can be useful if you plan to scan slave IDs using only one instance
+// of this class.
+void ModbusMaster::setSlave(uint8_t slave) {
+    _u8MBSlave = slave;
 }
 
 void ModbusMaster::setSpeed(uint16_t speed) {
@@ -701,7 +709,7 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
 
   // flush receive buffer before transmitting request
   while (_serial->read() > -1);
-  
+
   // transmit request
   if (_preTransmission)
   {

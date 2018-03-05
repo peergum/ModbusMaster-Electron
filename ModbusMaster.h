@@ -100,6 +100,8 @@ class ModbusMaster
     ModbusMaster();
 
     void begin(uint8_t slaveID, USARTSerial &serial);
+    void setSlave(uint8_t slave);
+
     void idle(void (*)());
     void preTransmission(void (*)());
     void postTransmission(void (*)());
@@ -284,7 +286,7 @@ class ModbusMaster
     static const uint8_t ku8MBReadWriteMultipleRegisters = 0x17; ///< Modbus function 0x17 Read Write Multiple Registers
 
     // Modbus timeout [milliseconds]
-    static const uint16_t ku16MBResponseTimeout          = 300; ///< Modbus timeout [milliseconds]
+    static const uint16_t ku16MBResponseTimeout          = 200; ///< Modbus timeout [milliseconds]
 
     // master function that conducts Modbus transactions
     uint8_t ModbusMasterTransaction(uint8_t u8MBFunction);
