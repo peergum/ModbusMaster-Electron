@@ -33,7 +33,7 @@ Arduino library for communicating with Modbus slaves over RS232/485 (via RTU pro
 
 /* _____PROJECT INCLUDES_____________________________________________________ */
 #include "util/arduino-electron-fixes.h"
-#include "ModbusMaster.h"
+#include "ModbusMaster-Particle.h"
 
 // Fix to define word type conversion function
 uint16_t word(uint8_t low) {
