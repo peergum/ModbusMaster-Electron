@@ -1,4 +1,4 @@
-# ModbusMaster-Electron
+# ModbusMaster-Electron [![Build Status](https://travis-ci.org/peergum/ModbusMaster-Electron.svg?branch=master)](https://travis-ci.org/peergum/ModbusMaster-Electron)
 ModbusMaster library for the Electron
 
 This is a derived work from 4-20's library for Arduinos.
@@ -10,4 +10,4 @@ Cheers
 Phil.
 
 ## Changelog
-* 1.0.2: improved performance
+* 1.0.2: improved performance, added example, allowed parity configuration
