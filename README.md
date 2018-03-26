@@ -8,3 +8,6 @@ Please feel free to improve, adapt or extend as necessary.
 
 Cheers
 Phil.
+
+## Changelog
+* 1.0.2: improved performance

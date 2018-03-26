@@ -87,6 +87,10 @@ void ModbusMaster::setSpeed(uint16_t speed) {
     _serial->begin(speed);
 }
 
+void ModbusMaster::setSpeed(uint16_t speed, uint32_t config) {
+    _serial->begin(speed, config);
+}
+
 void ModbusMaster::enableDebug(void) {
     _debugMode = true;
 }
@@ -743,6 +747,7 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
     int byteRead = _serial->read();
     if (byteRead>-1)
     {
+      u32StartTime = millis();
       // discard any initial 0x00 byte
       if (startedReading || byteRead != 0) {
           if (_debugMode) Log.trace("- %0x",byteRead);
